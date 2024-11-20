@@ -8,13 +8,14 @@ export default function Home() {
       <Image 
         src={logo}
         alt="logo"
+        width={300}
       />
       <div className="flex-1">
         <div className="flex gap-4 flex-wrap justify-center">
-          <Link href='/login' className="bg-[#FDE71F] uppercase px-4 py-2 rounded-md border border-black">
+          <Link href='/login' className="bg-[#FDE71F] uppercase px-4 py-2 rounded-md">
             Contratante
           </Link>
-          <Link href='/login' className="bg-[#54ADFF] uppercase px-4 py-2 rounded-md border border-black">
+          <Link href='/login' className="bg-[#54ADFF] uppercase px-4 py-2 rounded-md">
             Prestador
           </Link>
         </div>

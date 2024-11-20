@@ -1,3 +1,6 @@
+'use client'
+import { useRouter } from "next/navigation"
+
 export default function LimpezaConvencional() {
   const servicos = [
     'Varrer ou aspirar pisos (quartos, salas e corredores)',
@@ -12,6 +15,16 @@ export default function LimpezaConvencional() {
     'Organização leve de itens fora de lugar, como almofadas ou revistas',
   ]
   const valor = 150
+
+  const router = useRouter()
+
+  function recusar() {
+    router.back()
+  }
+
+  function aceitar() {
+    router.push('/busca')
+  }
 
   return (
     <div>
@@ -33,8 +46,8 @@ export default function LimpezaConvencional() {
         </h1>
       </div>
       <div className="flex justify-between mx-8">
-        <button className="bg-red-600 text-white px-4 py-2 rounded-md">VOLTAR</button>
-        <button className="bg-green-600 text-white px-4 py-2 rounded-md">CIENTE</button>
+        <button className="bg-red-600 text-white px-4 py-2 rounded-md" onClick={recusar}>VOLTAR</button>
+        <button className="bg-green-600 text-white px-4 py-2 rounded-md" onClick={aceitar}>CIENTE</button>
       </div>
     </div>
   )

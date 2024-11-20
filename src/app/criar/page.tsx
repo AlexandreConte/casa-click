@@ -1,6 +1,9 @@
 'use client'
-import Router from "next/router";
 import { useState } from "react";
+import Usuario from "@/model/Usuario";
+import { useUserContext } from "@/context/usuario";
+import Backend from "@/backend";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
   const [nome, setNome] = useState('');
@@ -8,26 +11,55 @@ export default function Home() {
   const [celular, setCelular] = useState('');
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
+  const [confirmarSenha, setConfirmarSenha] = useState('');
 
-  function cadastrar() {
+  const userContext = useUserContext();
+
+  const router = useRouter();
+
+  async function login() {
+    const usuario = await Backend.usuario.obterPorLogin(email, senha);
+    const loginUsuario = {
+      email: usuario.email,
+      nome: usuario.nome,
+      cpf: usuario.cpf,
+      celular: usuario.celular,
+      senha: usuario.cpf
+    }
+    userContext.setUsuario(loginUsuario as Usuario)
+  }
+
+  async function cadastrar() {
     if (verificaAlgumCampoVazio()) {
       alert('Preencha todos os campos');
       return;
     }
 
-    // TODO: CRIAR CONTAS NO BANCO DE DADOS
+    if (senha !== confirmarSenha) {
+      alert('As senhas não coincidem');
+      return;
+    }
+
+    try {
+      await Backend.usuario.criar(nome, cpf, email, senha, celular);
+    } catch {
+      alert('Erro ao cadastrar usuário, verifique se já possui uma conta com esse cpf ou email');
+    }
+
+    login()
     redirecionarParaInicio()
   }
 
   function verificaAlgumCampoVazio(): boolean {
-    if (!nome || !cpf || !celular || !email || !senha) {
+    if (!nome || !cpf || !celular || !email || !senha || !confirmarSenha) {
       return true;
     }
     return false
   }
 
   function redirecionarParaInicio() {
-    Router.push('/inicio');
+    router.replace('/inicio');
+    return;
   }
 
   return (
@@ -94,6 +126,18 @@ export default function Home() {
             id="senha"
             value={senha}
             onChange={(e) => setSenha(e.target.value)}
+          />
+        </div>
+        <div className="flex flex-col mx-8 gap-2">
+          <label className="uppercase" htmlFor="senha">
+            Confirme sua senha
+          </label>
+          <input
+            type="password"
+            className="bg-[#D9D9D9] rounded-md py-2 px-4"
+            id="senha"
+            value={confirmarSenha}
+            onChange={(e) => setConfirmarSenha(e.target.value)}
           />
         </div>
         <div className="flex-1 self-end mr-8">

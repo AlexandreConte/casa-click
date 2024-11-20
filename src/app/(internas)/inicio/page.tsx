@@ -8,6 +8,7 @@ export default function Inicio() {
       <Image
         src={logo}
         alt="logo"
+        width={300}
       />
       <div className="flex-1">
         <div className="flex flex-col gap-8">

@@ -1,6 +1,7 @@
-import type { Metadata } from "next";
+'use client'
 import localFont from "next/font/local";
 import "./globals.css";
+import { UserProvider } from "@/context/usuario";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -13,23 +14,20 @@ const geistMono = localFont({
   weight: "100 900",
 });
 
-export const metadata: Metadata = {
-  title: "Casa Click",
-  description: "Casa Click - Encontre o profissional ideal para sua casa",
-};
-
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
-      </body>
-    </html>
+    <UserProvider>
+      <html lang="en">
+        <body
+          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        >
+          {children}
+        </body>
+      </html>
+    </UserProvider>
   );
 }
